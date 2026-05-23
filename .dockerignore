@@ -1,0 +1,31 @@
+# Build artifacts (contain venv symlinks that break Docker context upload)
+build*/
+build-*/
+cmake-build-*/
+_deps/
+third_party/
+.ccache/
+Testing/
+
+# Python / testsuite
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+venv-*/
+
+# Git and IDE
+.git/
+.gitignore
+.idea/
+.vscode/
+
+# Local / debug
+*.log
+*.log.tmp
+debug-*.log
+.cores/
+.DS_Store
+
+# Not needed inside API image
+postgresql/

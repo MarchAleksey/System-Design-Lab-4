@@ -1,0 +1,28 @@
+services:
+  mongodb:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./docker/mongo-init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+  messenger-api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - jwt-secret=dev-secret-change-me
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    command:
+      - ./build-release/messenger_service
+      - --config
+      - /service/configs/static_config.yaml
+      - --config_vars
+      - /service/configs/config_vars.docker.yaml
